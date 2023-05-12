@@ -76,7 +76,4 @@ class FastTextFeaturizer(DenseFeaturizer):
     ) -> "Component":
         """Load this component from file."""
 
-        if cached_component:
-            return cached_component
-        else:
-            return cls(meta)
+        return cached_component if cached_component else cls(meta)

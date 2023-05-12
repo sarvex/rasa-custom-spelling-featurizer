@@ -19,11 +19,7 @@ if typing.TYPE_CHECKING:
 
 
 def _is_list_tokens(v):
-    if isinstance(v, List):
-        if len(v) > 0:
-            if isinstance(v[0], Token):
-                return True
-    return False
+    return isinstance(v, List) and len(v) > 0 and isinstance(v[0], Token)
 
 
 class OutlierComponent(DenseFeaturizer):
@@ -78,9 +74,9 @@ class OutlierComponent(DenseFeaturizer):
         self._set_outlier_features(message)
 
     def persist(self, file_name: Text, model_dir: Text) -> Optional[Dict[Text, Any]]:
-        path = os.path.join(model_dir, file_name + ".pkl")
+        path = os.path.join(model_dir, f"{file_name}.pkl")
         dump(self, path)
-        return {"isolation_file": file_name + ".pkl"}
+        return {"isolation_file": f"{file_name}.pkl"}
 
     @classmethod
     def load(
@@ -95,7 +91,6 @@ class OutlierComponent(DenseFeaturizer):
 
         if cached_component:
             return cached_component
-        else:
-            filename = meta.get("isolation_file")
-            filepath = os.path.join(model_dir, filename)
+        filename = meta.get("isolation_file")
+        filepath = os.path.join(model_dir, filename)
         return load(filepath)

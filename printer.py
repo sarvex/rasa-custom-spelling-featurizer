@@ -12,11 +12,7 @@ if typing.TYPE_CHECKING:
 
 
 def _is_list_tokens(v):
-    if isinstance(v, List):
-        if len(v) > 0:
-            if isinstance(v[0], Token):
-                return True
-    return False
+    return isinstance(v, List) and len(v) > 0 and isinstance(v[0], Token)
 
 
 class Printer(Component):
@@ -68,7 +64,4 @@ class Printer(Component):
     ) -> "Component":
         """Load this component from file."""
 
-        if cached_component:
-            return cached_component
-        else:
-            return cls(meta)
+        return cached_component if cached_component else cls(meta)
